@@ -110,7 +110,8 @@ namespace GoofyCoin
 
 
 
-            Console.ReadKey();
+            //Console.ReadKey();
+
             this.sgndTrans = mySignature.SignHash(transHash);
             this.hashSgndTrans = Hash(sgndTrans.SignedData);
         }
@@ -244,6 +245,35 @@ namespace GoofyCoin
             this.coin = null;
             this.destinyPk = destinyPk;
             this.previous = previous;
+        }
+    }
+
+    public class Person
+    {
+        private Signature mySig;
+        private const int sizeKey = 256;
+
+        public byte[] PublicKey
+        {
+            get { return mySig.PublicKey; }
+        }
+
+        public Person()
+        {
+            this.mySig = new Signature(sizeKey);
+        }
+
+        public Transfer PayTo(Transfer trans, byte[] destinyPk)
+        {
+            var prevHash = new TransferHash(trans, mySig);
+            return new Transfer(prevHash, destinyPk);
+        }
+    }
+    public class Authority : Person
+    {
+        public Transfer CreateCoin(byte[] destinyPk)
+        {
+            return new Transfer(new Coin(), destinyPk);
         }
     }
 }

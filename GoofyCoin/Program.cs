@@ -10,23 +10,21 @@ namespace GoofyCoin
     {
         static void Main(string[] args)
         {
-            var alice = new Signature(256);
-            var bob = new Signature(256);
-            var clark = new Signature(256);
+            var goofy = new Authority();
+            var alice = new Person();
+            var bob = new Person();
+            var clark = new Person();
             var david = new Signature(256);
 
-            var coin = new Transfer(new Coin(), alice.PublicKey);
+            var coin = goofy.CreateCoin(alice.PublicKey);
 
-            var coinHash = new TransferHash(coin, alice);
-            var trans1 = new Transfer(coinHash, bob.PublicKey);
+            var trans1 = alice.PayTo(coin, bob.PublicKey);
 
-            var trans1Hash = new TransferHash(trans1, bob);
-            var trans2 = new Transfer(trans1Hash, clark.PublicKey);
+            var trans2 = bob.PayTo(coin, clark.PublicKey);
 
-            var trans2Hash = new TransferHash(trans2, clark);
-            var trans3 = new Transfer(trans2Hash, david.PublicKey);
+            var trans3 = clark.PayTo(coin, david.PublicKey);
 
-            trans3.Previous.isValidHash();
+            var b = trans3.Previous.isValidHash();
         }
     }
 }
