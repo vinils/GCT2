@@ -32,7 +32,9 @@ namespace GoofyCoin
         {
             this.transfer = trans;
             var serializedTrans = SerializeObject(trans);
-            this.transHash = Hash(serializedTrans);
+            this.sgndTrans = mySignature.SignHash(serializedTrans);
+            this.hashSgndTrans = Hash(sgndTrans.SignedData);
+
 
             //var hexStr = ByteArrayToString(transHash);
             //Console.WriteLine(hexStr);
@@ -112,8 +114,6 @@ namespace GoofyCoin
 
             //Console.ReadKey();
 
-            this.sgndTrans = mySignature.SignHash(transHash);
-            this.hashSgndTrans = Hash(sgndTrans.SignedData);
         }
 
         public bool isValidHash()
